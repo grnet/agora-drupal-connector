@@ -1,0 +1,43 @@
+<?php
+
+function react_catalogue_menu() {
+  $items = array();
+
+  $url = variable_get('react_catalogue_urls', '');
+
+  $items[$url] = array(
+    'page callback' => 'react_catalogue_page',
+    'access arguments' => array('access content')
+  );
+
+  $items['admin/config/react_catalogue'] = array(
+    'title' => 'React actalogue module settings',
+    'description' => 'You can add different pages for the react app to load',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('react_catalogue_admin'),
+    'access arguments' => array('administer react_catalogue settings'),
+    'type' => MENU_NORMAL_ITEM,
+   );
+  return $items;
+}
+
+function react_catalogue_admin() {
+  $form = array();
+
+  $form['react_catalogue_urls'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Url to render ReactJS app'),
+    '#default_value' => variable_get('react_catalogue_urls', ''),
+    '#size' => 30,
+    '#description' => t("The url in order for ReactJS to render the content. IMPORTANT: You should clear all caches in order for drupal to use the new url."),
+    '#required' => TRUE,
+  );
+
+  return system_settings_form($form);
+}
+
+function react_catalogue_page() {
+  $url = variable_get('react_catalogue_urls', '');
+  $module_path = drupal_get_path('module', 'react_catalogue');
+  return "<div id='root'></div><script>window.react_catalogue={}; window.react_catalogue.config={}; window.react_catalogue.config.slug='".$url."';</script><script src='".$module_path."/js/agora-catalogue.js'></script>";
+}

@@ -1,0 +1,6 @@
+name = React Catalogue
+description = Show Service Catalogue 
+package = "Grnet"
+core = 7.x
+version = 7.x-0.1
+configure = admin/config/react_catalogue
