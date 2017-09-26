@@ -39,5 +39,6 @@ function react_catalogue_admin() {
 function react_catalogue_page() {
   $url = variable_get('react_catalogue_urls', '');
   $module_path = drupal_get_path('module', 'react_catalogue');
-  return "<div id='root'></div><script>window.react_catalogue={}; window.react_catalogue.config={}; window.react_catalogue.config.slug='".$url."';</script><script src='".$module_path."/js/agora-catalogue.js'></script>";
+  $js_filename = 'agora-ui.min.1.0.0.js';
+  return "<div id='root'></div><script>window.react_catalogue={}; window.react_catalogue.config={}; window.react_catalogue.config.slug='".$url."';</script><script src='".$module_path."/js/".$js_filename."'></script>";
 }
