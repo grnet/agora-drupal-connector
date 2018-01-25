@@ -11,7 +11,7 @@ function react_catalogue_menu() {
   );
 
   $items['admin/config/react_catalogue'] = array(
-    'title' => 'React actalogue module settings',
+    'title' => 'React catalogue module settings',
     'description' => 'You can add different pages for the react app to load',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('react_catalogue_admin'),
