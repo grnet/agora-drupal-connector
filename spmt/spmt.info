@@ -1,0 +1,8 @@
+name = SPMT Catalogue
+description = Service Catalogue
+package = "Grnet - SPMT"
+core = 7.x
+version = 7.x-0.1
+configure = admin/config/spmt
+dependencies[] = mforms
+dependencies[] = multiselect

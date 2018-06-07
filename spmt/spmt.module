@@ -1,0 +1,164 @@
+<?php
+
+/**
+ * Implements hook_STORE_KEY_mforms_init().
+ */
+function spmt_spmt_mforms_init() {
+  $store = MformsSessionStore::getInstance('spmt');
+  $steps = MformsSteps::getInstance($store);
+
+  // If using mustistep controls you need to explicitly define form steps and
+  // its attributes.
+  $controls = MformsMultiStepControls::getInstance($store, $steps, array(
+    '_spmt_step1' => array('value' => 'step 1', 'weight' => -103),
+    '_spmt_step2' => array('value' => 'step 2', 'weight' => -102),
+    '_spmt_step3' => array('value' => 'step 3', 'weight' => -101),
+    '_spmt_step4' => array('value' => 'step 4', 'weight' => -100),
+  ));
+  // Ajaxify the form stepping process.
+  //$controls->ajaxify();
+
+  // Init the mforms.
+  mforms_init_module('spmt', 'spmt', $store, $controls);
+}
+
+function spmt_menu() {
+  $items = array();
+
+  $items['admin/config/spmt'] = array(
+    'title' => 'SPMT Catalogue',
+    'description' => 'Configuration for SPMT Catalogue functionality',
+    'page callback' => 'spmt_admin',
+    'access arguments' => array('administer spmt settings'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/config/spmt/wizard'] = array(
+    'title' => 'Add a new feed',
+    'description' => 'Register a new feed',
+    'page callback' => 'spmt_wizard_page',
+    'access arguments' => array(TRUE),
+    'page arguments' => array(4),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'spmt.pages.inc'
+  );
+  $items['admin/config/spmt/delete'] = array(
+    'title' => 'Delete a feed',
+    'description' => 'Delete a feed',
+    'page callback' => 'spmt_delete_page',
+    'access arguments' => array(TRUE),
+    'page arguments' => array(4),
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  //add all dynamic urls
+  $feeds = variable_get('spmtData');
+  if(isset($feeds)) {
+    foreach($feeds as $key => $feed) {
+      $items[$feed['page']] = array(
+        'page callback' => 'react_catalogue_page',
+        'page arguments' => array($feed['page']),
+        'access arguments' => array(TRUE)
+      );
+    }
+  }
+
+  return $items;
+}
+
+function react_catalogue_page($page) {
+  //prepare the data for js
+  $feeds = variable_get('spmtData');
+  $catalogue = array();
+  foreach($feeds as $feed) {
+    if($feed['page'] == $page) {
+      $catalogue['feed_url'] = $feed['feed_url'];
+      $catalogue['page'] = $feed['page'];
+      $fields = array();
+      foreach($feed['fields'] as $key => $value) {
+        //keep the order
+        $field = array();
+        $field['field_key'] = $key;
+        $field['field_label'] = $value;
+        $fields[] = $field;
+      }
+      $catalogue['fields'] = $fields;
+    }
+  }
+  return '<div id="root"></div><script>window.spmt='.json_encode($catalogue).';</script>';
+}
+
+function spmt_delete_page($feed_id) {
+  $data = variable_get('spmtData');
+  if(isset($data)) {
+    //remove data
+    if(isset($data[$feed_id])) {
+      array_splice($data, $feed_id, 1);
+      variable_set('spmtData', $data);
+    }
+  }
+
+  drupal_goto('/admin/config/spmt/');
+}
+
+function render_table() {
+  $data = variable_get('spmtData');
+
+  $header = array('#', 'feed_url', 'page', 'fields', 'edit', 'delete');
+  $rows = array();
+
+  if(isset($data)) {
+    foreach ($data as $key => $value) {
+      $fields = array();
+
+      if(isset($value['fields'])) {
+        foreach($value['fields'] as $field_key => $field_value) {
+          $fields[] = $field_key.' = '.$field_value;
+        }
+      }
+
+      $rows[] = array(
+        $key,
+        $value['feed_url'],
+        $value['page'],
+        implode('<br />', $fields),
+        '<a href="/?q=admin/config/spmt/wizard/'.$key.'">Edit</a>',
+        '<a href="/?q=admin/config/spmt/delete/'.$key.'">Delete</a>',
+      );
+    }
+  }
+
+  return theme('table', array('header' => $header, 'rows' => $rows));
+}
+
+function render_feed_button() {
+  $link = array(
+    '#type' => 'link',
+    '#text' => 'Add a new feed',
+    '#title' => 'Add a new feed',
+    '#href' => 'admin/config/spmt/wizard',
+    '#options' => array(
+      'attributes' => array('class' => array('cool-class'), 'id' => 'cool-id'),
+      'html' => FALSE,
+    ),
+  );
+
+  return $link;
+}
+
+function spmt_admin() {
+  return theme('spmt_admin_template', array(
+    'table' => render_table(),
+    'link' => render_feed_button(),
+  ));
+}
+
+function spmt_theme() {
+  $themes = array(
+    'spmt_admin_template' => array(
+      'template' => '/theme/admin_template',
+      'variables' => array(),
+    ),
+  );
+
+  return $themes;
+}
