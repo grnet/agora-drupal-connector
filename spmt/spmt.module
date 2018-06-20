@@ -69,20 +69,19 @@ function react_catalogue_page($page) {
   //prepare the data for js
   $feeds = variable_get('spmtData');
   $catalogue = array();
-  foreach($feeds as $feed) {
-    if($feed['page'] == $page) {
-      $catalogue['feed_url'] = $feed['feed_url'];
-      $catalogue['page'] = $feed['page'];
-      $fields = array();
-      foreach($feed['fields'] as $key => $value) {
-        //keep the order
-        $field = array();
-        $field['field_key'] = $key;
-        $field['field_label'] = $value;
-        $fields[] = $field;
-      }
-      $catalogue['fields'] = $fields;
+  $feed_key = array_search($page, array_column($feeds, 'page'));
+  if ($feed_key !== FALSE) {
+    $catalogue['feed_url'] = $feeds[$feed_key]['feed_url'];
+    $catalogue['page'] = $feeds[$feed_key]['page'];
+    $fields = array();
+    foreach($feeds[$feed_key]['fields'] as $key => $value) {
+      //keep the order
+      $field = array();
+      $field['field_key'] = $key;
+      $field['field_label'] = $value;
+      $fields[] = $field;
     }
+    $catalogue['fields'] = $fields;
   }
   return '<div id="root"></div><script>window.spmt='.json_encode($catalogue).';</script>';
 }

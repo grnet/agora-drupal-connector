@@ -9,7 +9,6 @@ function _spmt_step1(&$form_state, &$next_step, $params) {
 
   //retrieve saved data
   $savedData = variable_get('spmtData');
-  dpm($savedData);
 
   if(!empty($data)) {
     $vals = $data;
@@ -143,26 +142,25 @@ function _spmt_step3(&$form_state, &$next_step, $params) {
     $vals = $form_state['values'];
   }
 
-  $fields = array();
+  $selected_fields = array();
   foreach($vals['selected_fields'] as $k) {
-    $fields[$k] = $k;
+    $selected_fields[$k] = $k;
   }
 
   //edit mode - preload values
-  if(isset($params['feed_id']) && isset($savedData)) {
-    if(isset($savedData[$params['feed_id']])) {
-      //$vals['fields'] = array_flip($savedData[$params['feed_id']]['fields']);
-      foreach($savedData[$params['feed_id']]['fields'] as $key => $value) {
-        if($key === $fields[$key]) {
-          $fields[$key] = $value;
-        }
-      }
-    }
+  if(isset($params['feed_id'])
+      && isset($savedData)
+      && isset($savedData[$params['feed_id']])
+  ) {
+    $saved_field_names = $savedData[$params['feed_id']]['fields'];
+    foreach($selected_fields as $field)
+      $selected_fields[$field] = isset($saved_field_names[$field]) ?
+                                 $saved_field_names[$field] : $field;
   }
 
   $form = array();
 
-  foreach($fields as $k => $v) {
+  foreach($selected_fields as $k => $v) {
     $form['field__'.$k.'__label'] = array(
       '#type' => 'hidden',
       '#title' => 'field__'.$k.'__label',
@@ -177,10 +175,6 @@ function _spmt_step3(&$form_state, &$next_step, $params) {
   };
 
   return $form;
-}
-
-function _spmt_step3_validate($form, &$form_state) {
-  //
 }
 
 function _spmt_step4(&$form_state, &$next_step, $params) {
@@ -227,9 +221,6 @@ function _spmt_step4(&$form_state, &$next_step, $params) {
   }
 
   return $form;
-}
-
-function _spmt_ste4_validate($form, &$form_state) {
 }
 
 function _spmt_step4_submit($form, &$form_state) {
