@@ -73,6 +73,9 @@ function _spmt_step1_validate($form, &$form_state) {
       }
     }
   }
+
+  $form_state['values']['feed_url'] = filter_xss($form_state['values']['feed_url']);
+  $form_state['values']['page'] = filter_xss($form_state['values']['page']);
 }
 
 function _spmt_step2(&$form_state, &$next_step, $params) {
@@ -185,6 +188,14 @@ function _spmt_step3(&$form_state, &$next_step, $params) {
   return $form;
 }
 
+function _spmt_step3_validate($form, &$form_state) {
+  foreach($form_state['values'] as $key => $value) {
+    if(substr($key, -7) == '__value') {
+      $form_state['values'][$key] = filter_xss($value);
+    }
+  }
+}
+
 function _spmt_step4(&$form_state, &$next_step, $params) {
   //define next step, do not set if last step
 
@@ -218,6 +229,11 @@ function _spmt_step4(&$form_state, &$next_step, $params) {
     '#type' => 'item',
     '#title' => 'Feed url',
     '#description' => $vals1['feed_url'],
+  );
+  $form['basic_info']['page'] = array(
+    '#type' => 'item',
+    '#title' => 'Feed url',
+    '#description' => $vals1['page'],
   );
 
   foreach($final_fields as $key => $value) {
