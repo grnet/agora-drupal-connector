@@ -6,3 +6,4 @@ version = 7.x-0.1
 configure = admin/config/spmt
 dependencies[] = mforms
 dependencies[] = multiselect
+stylesheets[all][] = css/styles.css
