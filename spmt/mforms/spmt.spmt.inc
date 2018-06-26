@@ -59,10 +59,18 @@ function _spmt_step1_validate($form, &$form_state) {
   } else if(empty($form_state['values']['page'])) {
     form_set_error('page', 'The page to render the feed must not be empty');
   } else {
-    $result = drupal_json_decode(shell_exec("curl ".$form_state['values']['feed_url']." --insecure"));
-    if(isset($result['status']) && $result['status']) {
-      // 404 or some other error
-      form_set_error('feed_url', 'There is a problem with the feed url');
+    $page = $form_state['values']['page'];
+    $savedData = variable_get('spmtData');
+    if(isset($savedData)) {
+      $found = false;
+      foreach($savedData as $feed) {
+        if($feed['page'] == $page) {
+          $found = true;
+        }
+      }
+      if($found) {
+        form_set_error('page', 'This page name already exists. You must define a new page.');
+      }
     }
   }
 }
@@ -105,7 +113,7 @@ function _spmt_step2(&$form_state, &$next_step, $params) {
     '#default_value' => (isset($vals['fields'])) ? $vals['fields'] : array(),
     '#multiple' => TRUE,
     '#size' => 15,
-    //'#required' => FALSE,
+    '#required' => FALSE,
   );
 
   $form['#attached']['css'] = array(
@@ -284,8 +292,15 @@ function getStep3Fields($vals) {
 
 function getStep2Data($request_url) {
 
-  //$result = drupal_http_request($request_url, array('Content-Type' => 'application/json'), 'GET', '', 3);
-  $result = drupal_json_decode(shell_exec("curl ".$request_url." --insecure"));
+  $response = drupal_http_request($request_url, array('Content-Type' => 'application/json'), 'GET', '', 3);
+  if($response->code !== 200 && drupal_json_decode($response->data) == null) {
+    //clear session
+    mforms_clean('spmt');
+    drupal_set_message("There is a problem with the feed url", "warning");
+    drupal_goto('/admin/config/spmt');
+  }
+
+  $result = drupal_json_decode($response->data);
 
   $keys = array();
 
