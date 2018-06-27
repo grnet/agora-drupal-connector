@@ -309,7 +309,7 @@ function getStep3Fields($vals) {
 function getStep2Data($request_url) {
 
   $response = drupal_http_request($request_url, array('Content-Type' => 'application/json'), 'GET', '', 3);
-  if($response->code !== 200 && drupal_json_decode($response->data) == null) {
+  if(($response->code != 200) || (($response->code == 200) && (drupal_json_decode($response->data) == null))) {
     //clear session
     mforms_clean('spmt');
     drupal_set_message("There is a problem with the feed url", "warning");
