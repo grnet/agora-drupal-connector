@@ -5,5 +5,5 @@ core = 7.x
 version = 7.x-0.1
 configure = admin/config/spmt
 dependencies[] = mforms
-dependencies[] = multiselect
+dependencies[] = multiselect_sorting
 stylesheets[all][] = css/styles.css

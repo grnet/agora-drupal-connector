@@ -68,7 +68,7 @@ function _spmt_step1_validate($form, &$form_state) {
           $found = true;
         }
       }
-      if($found) {
+      if($found && !isset($form_state['values']['feed_id'])) {
         form_set_error('page', 'This page name already exists. You must define a new page.');
       }
     }
