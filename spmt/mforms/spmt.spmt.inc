@@ -122,11 +122,11 @@ function _spmt_step2(&$form_state, &$next_step, $params) {
   );
 
   $form['#attached']['css'] = array(
-    drupal_get_path('module', 'multiselect') . '/multiselect.css',
+    drupal_get_path('module', 'multiselect_sorting') . '/multiselect.css',
   );
 
   $form['#attached']['js'] = array(
-    drupal_get_path('module', 'multiselect') . '/multiselect.js',
+    drupal_get_path('module', 'multiselect_sorting') . '/multiselect.js',
   );
 
   return $form;

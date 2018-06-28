@@ -65,6 +65,10 @@ function spmt_menu() {
   return $items;
 }
 
+function spmt_uninstall() {
+  varibale_del('spmtData');
+}
+
 function react_catalogue_page($page) {
   //prepare the data for js
   $feeds = variable_get('spmtData');
@@ -83,7 +87,10 @@ function react_catalogue_page($page) {
     }
     $catalogue['fields'] = $fields;
   }
-  return '<div id="root"></div><script>window.spmt='.json_encode($catalogue).';</script>';
+
+  $module_path = drupal_get_path('module', 'spmt');
+  $js_file = 'agora-ui.min.js';
+  return '<div id="root"></div><script>window.spmt='.json_encode($catalogue).';</script><script src="'.$module_path.'/js/'.$js_file.'"></script>';
 }
 
 function spmt_delete_page($feed_id) {
@@ -118,7 +125,7 @@ function render_table() {
       $rows[] = array(
         $key,
         $value['feed_url'],
-        $value['page'],
+        '<a target="_blank" href="/'.$value['page'].'">'.$value['page'].'</a>',
         implode('<br />', $fields),
         '<a href="/?q=admin/config/spmt/wizard/'.$key.'">Edit</a>',
         '<a href="/?q=admin/config/spmt/delete/'.$key.'">Delete</a>',
