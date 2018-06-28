@@ -1,5 +1,5 @@
-name = SPMT Catalogue
-description = Service Catalogue
+name = SPMT
+description = SPMT
 package = "Grnet - SPMT"
 core = 7.x
 version = 7.x-0.1

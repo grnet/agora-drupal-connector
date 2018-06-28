@@ -2,7 +2,7 @@
 
 function spmt_wizard_page($feed_id = NULL) {
 
-  $description = '<h1>this is a description for spmt form';
+  $description = '<h1>SPMT Configuration';
 
   $params = array();
   if(isset($feed_id)) {

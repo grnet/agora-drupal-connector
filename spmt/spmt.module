@@ -26,15 +26,15 @@ function spmt_menu() {
   $items = array();
 
   $items['admin/config/spmt'] = array(
-    'title' => 'SPMT Catalogue',
-    'description' => 'Configuration for SPMT Catalogue functionality',
+    'title' => 'SPMT',
+    'description' => 'Configuration for SPMT pages',
     'page callback' => 'spmt_admin',
     'access arguments' => array('administer spmt settings'),
     'type' => MENU_NORMAL_ITEM,
   );
   $items['admin/config/spmt/wizard'] = array(
-    'title' => 'Add a new feed',
-    'description' => 'Register a new feed',
+    'title' => 'Add a new SPMT API',
+    'description' => 'Register a new SPMT API',
     'page callback' => 'spmt_wizard_page',
     'access arguments' => array(TRUE),
     'page arguments' => array(4),
@@ -42,12 +42,12 @@ function spmt_menu() {
     'file' => 'spmt.pages.inc'
   );
   $items['admin/config/spmt/delete'] = array(
-    'title' => 'Delete a feed',
-    'description' => 'Delete a feed',
+    'title' => 'Delete a SPMT API',
+    'description' => 'Delete a SPMT API',
     'page callback' => 'spmt_delete_page',
     'access arguments' => array(TRUE),
     'page arguments' => array(4),
-    'type' => MENU_LOCAL_TASK,
+    'type' => MENU_CONTEXT_NONE,
   );
 
   //add all dynamic urls
@@ -102,7 +102,7 @@ function spmt_delete_page($feed_id) {
 function render_table() {
   $data = variable_get('spmtData');
 
-  $header = array('#', 'feed_url', 'page', 'fields', 'edit', 'delete');
+  $header = array('#', 'SPMT API', 'rendered page', 'fields', 'edit', 'delete');
   $rows = array();
 
   if(isset($data)) {

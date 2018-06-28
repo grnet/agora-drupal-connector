@@ -29,14 +29,16 @@ function _spmt_step1(&$form_state, &$next_step, $params) {
 
   $form['feed_url'] = array(
     '#type' => 'textfield',
-    '#title' => 'Feed url',
+    '#title' => 'SPMT API',
+    '#description' => 'Provide a valid url, i.e. https://[domain_name]/api/v2/ext-services',
     '#required' => TRUE,
     '#default_value' => isset($vals['feed_url']) ? $vals['feed_url'] : NULL,
   );
 
   $form['page'] = array(
     '#type' => 'textfield',
-    '#title' => 'Page to render the feed',
+    '#title' => 'Page to render services',
+    '#description' => 'Provide a page name that will be created in Drupal to render services',
     '#required' => TRUE,
     '#default_value' => isset($vals['page']) ? $vals['page'] : NULL,
   );
@@ -110,7 +112,7 @@ function _spmt_step2(&$form_state, &$next_step, $params) {
 
   $form['selected_fields'] = array(
     '#type' => 'multiselect',
-    '#title' => t('Select the keys you want to be visible in the page'),
+    '#title' => t('Select the service details to display on the rendered page'),
     '#properties' => array(),
     '#options' => $converted_keys,
     '#default_value' => (isset($vals['fields'])) ? $vals['fields'] : array(),
@@ -217,22 +219,23 @@ function _spmt_step4(&$form_state, &$next_step, $params) {
 
   $form['basic_info'] = array(
     '#type' => 'fieldset',
-    '#title' => 'Basic info'
+    '#title' => 'Review your selections'
   );
 
   $form['visible_fields'] = array(
     '#type' => 'fieldset',
-    '#title' => 'Visible Fields'
+    '#title' => 'Selected Titles'
   );
 
   $form['basic_info']['feed_url'] = array(
     '#type' => 'item',
-    '#title' => 'Feed url',
+    '#title' => 'SPMT API',
     '#description' => $vals1['feed_url'],
   );
+
   $form['basic_info']['page'] = array(
     '#type' => 'item',
-    '#title' => 'Feed url',
+    '#title' => 'Page to render services',
     '#description' => $vals1['page'],
   );
 
