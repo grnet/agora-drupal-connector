@@ -1,0 +1,143 @@
+.page-admin-config-spmt #edit-steps-btns-wrapper{
+  display: none;
+}
+
+.page-admin-config-spmt h1 {
+  text-transform: uppercase;
+}
+
+.page-admin-config-spmt #mforms-wrapper-spmt {
+  margin-top: 40px;
+  text-transform: initial;
+}
+
+/* Forms */
+.page-admin-config-spmt .form-item label {
+  float: left;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 10px 0;
+  width: 25%;
+}
+
+.page-admin-config-spmt input.form-autocomplete,
+.page-admin-config-spmt input.form-text,
+.page-admin-config-spmt input.form-file,
+.page-admin-config-spmt textarea.form-textarea,
+.page-admin-config-spmt select.form-multiselect,
+.page-admin-config-spmt select.form-select {
+  border: 1px solid #ccc;
+  font-size: 14px;
+  padding: 10px;
+}
+
+.page-admin-config-spmt input.form-text:focus,
+.page-admin-config-spmt input.form-file:focus,
+.page-admin-config-spmt textarea.form-textarea:focus,
+.page-admin-config-spmt select.form-multiselect:focus,
+.page-admin-config-spmt select.form-select:focus {
+  background: #fafafa;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+  outline: 0;
+}
+
+.page-admin-config-spmt input.form-submit,
+.page-admin-config-spmt a.button {
+  background: #48a9e4;
+  border-radius: 2px;
+  border: none;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+  color: #fff;
+  font-size: 14px;
+  height: 36px;
+  letter-spacing: .5px;
+  line-height: 36px;
+  margin: 30px 40px 20px 0;
+  outline: 0;
+  padding: 0 16px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.page-admin-config-spmt input.form-submit:focus,
+.page-admin-config-spmt input.form-submit:hover,
+.page-admin-config-spmt a.button:focus,
+.page-admin-config-spmt a.button:hover {
+  background: #58bffd;
+}
+
+/* Multiselect */
+.page-admin-config-spmt .multiselect {
+  display: block;
+}
+
+.page-admin-config-spmt .form-type-multiselect label {
+  width: 100%;
+}
+
+.page-admin-config-spmt .multiselect-selector option {
+  font-size: 14px;
+  padding: 2px 6px;
+}
+
+.page-admin-config-spmt .multiselect_labels .label_unselected,
+.page-admin-config-spmt .multiselect_labels .label_selected {
+  color: #333;
+  float: none;
+  font-size: 16px;
+  margin: 10px 0;
+  text-transform: uppercase;
+}
+
+.page-admin-config-spmt form .multiselect,
+.page-admin-config-spmt .multiselect_labels {
+  width: 750px;
+}
+
+.page-admin-config-spmt .multiselect_available {
+  float: none;
+  width: auto;
+}
+
+.page-admin-config-spmt form .multiselect .multiselect-selector > div {
+  flex-basis: 40%;
+  padding: 0;
+}
+
+.page-admin-config-spmt form .multiselect .multiselect-selector > ul {
+  flex-basis: 10%;
+}
+
+.page-admin-config-spmt select.multiselect_sel,
+.page-admin-config-spmt select.multiselect_unsel {
+  height: 100%;
+  width: 100%;
+}
+
+/* Summary page */
+.page-admin-config-spmt  fieldset {
+  border: 0 none;
+}
+
+.page-admin-config-spmt fieldset .form-item label {
+  font-weight: bold;
+  padding: 0;
+}
+
+.page-admin-config-spmt .form-item div.description {
+  color: #333;
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0;
+}
+
+/* Messages */
+.page-admin-config-spmt div.error {
+  background-color: #f52525;
+  color: #fff;
+}
+
+.page-admin-config-spmt div.warning {
+  background-color: #ff9800;
+  color: #fff;
+}
