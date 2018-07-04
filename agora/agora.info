@@ -1,9 +1,9 @@
-name = SPMT
-description = SPMT
-package = "Grnet - SPMT"
+name = Agora
+description = Agora
+package = "Grnet - Agora"
 core = 7.x
 version = 7.x-0.1
-configure = admin/config/spmt
+configure = admin/config/agora
 dependencies[] = mforms
 dependencies[] = multiselect_sorting
 stylesheets[all][] = css/styles.css

@@ -1,14 +1,14 @@
 <?php
 
-function _spmt_step1(&$form_state, &$next_step, $params) {
+function _agora_step1(&$form_state, &$next_step, $params) {
   //define next step, do not set if last step
-  $next_step = '_spmt_step2';
+  $next_step = '_agora_step2';
 
   //retrive data from store
-  $data = mforms_get_vals('spmt');
+  $data = mforms_get_vals('agora');
 
   //retrieve saved data
-  $savedData = variable_get('spmtData');
+  $savedData = variable_get('agoraData');
 
   if(!empty($data)) {
     $vals = $data;
@@ -29,8 +29,9 @@ function _spmt_step1(&$form_state, &$next_step, $params) {
 
   $form['feed_url'] = array(
     '#type' => 'textfield',
-    '#title' => 'SPMT API',
+    '#title' => 'Agora API',
     '#description' => 'Provide a valid url, i.e. https://[domain_name]/api/v2/ext-services',
+    '#disabled' => (isset($params['feed_id']) && $params['feed_id'] != NULL) ? TRUE : FALSE,
     '#required' => TRUE,
     '#default_value' => isset($vals['feed_url']) ? $vals['feed_url'] : NULL,
   );
@@ -39,6 +40,7 @@ function _spmt_step1(&$form_state, &$next_step, $params) {
     '#type' => 'textfield',
     '#title' => 'Page to render services',
     '#description' => 'Provide a page name that will be created in Drupal to render services',
+    '#disabled' => (isset($params['feed_id']) && $params['feed_id'] != NULL) ? TRUE : FALSE,
     '#required' => TRUE,
     '#default_value' => isset($vals['page']) ? $vals['page'] : NULL,
   );
@@ -55,14 +57,14 @@ function _spmt_step1(&$form_state, &$next_step, $params) {
   return $form;
 }
 
-function _spmt_step1_validate($form, &$form_state) {
+function _agora_step1_validate($form, &$form_state) {
   if(empty($form_state['values']['feed_url'])) {
     form_set_error('feed_url', 'The feed url must not be empty');
   } else if(empty($form_state['values']['page'])) {
     form_set_error('page', 'The page to render the feed must not be empty');
   } else {
     $page = $form_state['values']['page'];
-    $savedData = variable_get('spmtData');
+    $savedData = variable_get('agoraData');
     if(isset($savedData)) {
       $found = false;
       foreach($savedData as $feed) {
@@ -80,15 +82,15 @@ function _spmt_step1_validate($form, &$form_state) {
   $form_state['values']['page'] = filter_xss($form_state['values']['page']);
 }
 
-function _spmt_step2(&$form_state, &$next_step, $params) {
+function _agora_step2(&$form_state, &$next_step, $params) {
   //define next step, do not set if last step
-  $next_step = '_spmt_step3';
+  $next_step = '_agora_step3';
 
   //retrive data from store
-  $data = mforms_get_vals('spmt');
+  $data = mforms_get_vals('agora');
 
   //retrieve saved data
-  $savedData = variable_get('spmtData');
+  $savedData = variable_get('agoraData');
 
   if(!empty($data)) {
     $vals = $data;
@@ -118,7 +120,6 @@ function _spmt_step2(&$form_state, &$next_step, $params) {
     '#default_value' => (isset($vals['fields'])) ? $vals['fields'] : array(),
     '#multiple' => TRUE,
     '#size' => 15,
-    '#required' => FALSE,
   );
 
   $form['#attached']['css'] = array(
@@ -132,21 +133,21 @@ function _spmt_step2(&$form_state, &$next_step, $params) {
   return $form;
 }
 
-function _spmt_step2_validate($form, &$form_state) {
+function _agora_step2_validate($form, &$form_state) {
   if(empty($form_state['values']['selected_fields'])) {
     form_set_error('selected_fields', 'You must select at least one field');
   }
 }
 
-function _spmt_step3(&$form_state, &$next_step, $params) {
+function _agora_step3(&$form_state, &$next_step, $params) {
   //define next step, do not set if last step
-  $next_step = '_spmt_step4';
+  $next_step = '_agora_step4';
 
   //retrive data from store
-  $data = mforms_get_vals('spmt');
+  $data = mforms_get_vals('agora');
 
   //retrieve saved data
-  $savedData = variable_get('spmtData');
+  $savedData = variable_get('agoraData');
 
   if(!empty($data)) {
     $vals = $data;
@@ -190,7 +191,7 @@ function _spmt_step3(&$form_state, &$next_step, $params) {
   return $form;
 }
 
-function _spmt_step3_validate($form, &$form_state) {
+function _agora_step3_validate($form, &$form_state) {
   foreach($form_state['values'] as $key => $value) {
     if(substr($key, -7) == '__value') {
       $form_state['values'][$key] = filter_xss($value);
@@ -198,11 +199,11 @@ function _spmt_step3_validate($form, &$form_state) {
   }
 }
 
-function _spmt_step4(&$form_state, &$next_step, $params) {
+function _agora_step4(&$form_state, &$next_step, $params) {
   //define next step, do not set if last step
 
   //retrive data from store
-  $data = mforms_get_vals('spmt');
+  $data = mforms_get_vals('agora');
 
   if(!empty($data)) {
     $vals = $data;
@@ -211,7 +212,7 @@ function _spmt_step4(&$form_state, &$next_step, $params) {
     $vals = $form_state['values'];
   }
 
-  $vals1 = mforms_get_vals('spmt', '_spmt_step1');
+  $vals1 = mforms_get_vals('agora', '_agora_step1');
 
   $form = array();
 
@@ -229,7 +230,7 @@ function _spmt_step4(&$form_state, &$next_step, $params) {
 
   $form['basic_info']['feed_url'] = array(
     '#type' => 'item',
-    '#title' => 'SPMT API',
+    '#title' => 'Agora API',
     '#description' => $vals1['feed_url'],
   );
 
@@ -250,10 +251,10 @@ function _spmt_step4(&$form_state, &$next_step, $params) {
   return $form;
 }
 
-function _spmt_step4_submit($form, &$form_state) {
+function _agora_step4_submit($form, &$form_state) {
 
-  $vals1 = mforms_get_vals('spmt', '_spmt_step1');
-  $vals3 = mforms_get_vals('spmt', '_spmt_step3');
+  $vals1 = mforms_get_vals('agora', '_agora_step1');
+  $vals3 = mforms_get_vals('agora', '_agora_step3');
   $final_fields = getStep3Fields($vals3);
 
   $new_feed_data = array(
@@ -262,7 +263,7 @@ function _spmt_step4_submit($form, &$form_state) {
     'fields' => $final_fields
   );
 
-  $savedData = variable_get('spmtData');
+  $savedData = variable_get('agoraData');
 
   //edit mode - preload values
   if(isset($vals1['feed_id']) && isset($savedData[$vals1['feed_id']])) {
@@ -275,13 +276,13 @@ function _spmt_step4_submit($form, &$form_state) {
   }
 
   // lastly, save data
-  variable_set('spmtData', $savedData);
+  variable_set('agoraData', $savedData);
 
   //clear session
-  mforms_clean('spmt');
+  mforms_clean('agora');
 
   //redirect
-  drupal_goto('/admin/config/spmt');
+  drupal_goto('/admin/config/agora');
 
 }
 
@@ -314,9 +315,9 @@ function getStep2Data($request_url) {
   $response = drupal_http_request($request_url, array('Content-Type' => 'application/json'), 'GET', '', 3);
   if(($response->code != 200) || (($response->code == 200) && (drupal_json_decode($response->data) == null))) {
     //clear session
-    mforms_clean('spmt');
+    mforms_clean('agora');
     drupal_set_message("There is a problem with the feed url", "warning");
-    drupal_goto('/admin/config/spmt');
+    drupal_goto('/admin/config/agora');
   }
 
   $result = drupal_json_decode($response->data);

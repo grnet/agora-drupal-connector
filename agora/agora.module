@@ -3,55 +3,55 @@
 /**
  * Implements hook_STORE_KEY_mforms_init().
  */
-function spmt_spmt_mforms_init() {
-  $store = MformsSessionStore::getInstance('spmt');
+function agora_agora_mforms_init() {
+  $store = MformsSessionStore::getInstance('agora');
   $steps = MformsSteps::getInstance($store);
 
   // If using mustistep controls you need to explicitly define form steps and
   // its attributes.
   $controls = MformsMultiStepControls::getInstance($store, $steps, array(
-    '_spmt_step1' => array('value' => 'step 1', 'weight' => -103),
-    '_spmt_step2' => array('value' => 'step 2', 'weight' => -102),
-    '_spmt_step3' => array('value' => 'step 3', 'weight' => -101),
-    '_spmt_step4' => array('value' => 'step 4', 'weight' => -100),
+    '_agora_step1' => array('value' => 'step 1', 'weight' => -103),
+    '_agora_step2' => array('value' => 'step 2', 'weight' => -102),
+    '_agora_step3' => array('value' => 'step 3', 'weight' => -101),
+    '_agora_step4' => array('value' => 'step 4', 'weight' => -100),
   ));
   // Ajaxify the form stepping process.
   //$controls->ajaxify();
 
   // Init the mforms.
-  mforms_init_module('spmt', 'spmt', $store, $controls);
+  mforms_init_module('agora', 'agora', $store, $controls);
 }
 
-function spmt_menu() {
+function agora_menu() {
   $items = array();
 
-  $items['admin/config/spmt'] = array(
-    'title' => 'SPMT',
-    'description' => 'Configuration for SPMT pages',
-    'page callback' => 'spmt_admin',
-    'access arguments' => array('administer spmt settings'),
+  $items['admin/config/agora'] = array(
+    'title' => 'Agora',
+    'description' => 'Configuration for Agora pages',
+    'page callback' => 'agora_admin',
+    'access arguments' => array('administer agora settings'),
     'type' => MENU_NORMAL_ITEM,
   );
-  $items['admin/config/spmt/wizard'] = array(
-    'title' => 'Add a new SPMT API',
-    'description' => 'Register a new SPMT API',
-    'page callback' => 'spmt_wizard_page',
+  $items['admin/config/agora/wizard'] = array(
+    'title' => 'Add a new Agora API',
+    'description' => 'Register a new Agora API',
+    'page callback' => 'agora_wizard_page',
     'access arguments' => array(TRUE),
     'page arguments' => array(4),
     'type' => MENU_LOCAL_TASK,
-    'file' => 'spmt.pages.inc'
+    'file' => 'agora.pages.inc'
   );
-  $items['admin/config/spmt/delete'] = array(
-    'title' => 'Delete a SPMT API',
-    'description' => 'Delete a SPMT API',
-    'page callback' => 'spmt_delete_page',
+  $items['admin/config/agora/delete'] = array(
+    'title' => 'Delete a Agora API',
+    'description' => 'Delete a Agora API',
+    'page callback' => 'agora_delete_page',
     'access arguments' => array(TRUE),
     'page arguments' => array(4),
     'type' => MENU_CONTEXT_NONE,
   );
 
   //add all dynamic urls
-  $feeds = variable_get('spmtData');
+  $feeds = variable_get('agoraData');
   if(isset($feeds)) {
     foreach($feeds as $key => $feed) {
       $items[$feed['page']] = array(
@@ -65,13 +65,9 @@ function spmt_menu() {
   return $items;
 }
 
-function spmt_uninstall() {
-  varibale_del('spmtData');
-}
-
 function react_catalogue_page($page) {
   //prepare the data for js
-  $feeds = variable_get('spmtData');
+  $feeds = variable_get('agoraData');
   $catalogue = array();
   $feed_key = array_search($page, array_column($feeds, 'page'));
   if ($feed_key !== FALSE) {
@@ -88,28 +84,28 @@ function react_catalogue_page($page) {
     $catalogue['fields'] = $fields;
   }
 
-  $module_path = drupal_get_path('module', 'spmt');
+  $module_path = drupal_get_path('module', 'agora');
   $js_file = 'agora-ui.min.js';
-  return '<div id="root"></div><script>window.spmt='.json_encode($catalogue).';</script><script src="'.$module_path.'/js/'.$js_file.'"></script>';
+  return '<div id="root"></div><script>window.agora='.json_encode($catalogue).';</script><script src="'.$module_path.'/js/'.$js_file.'"></script>';
 }
 
-function spmt_delete_page($feed_id) {
-  $data = variable_get('spmtData');
+function agora_delete_page($feed_id) {
+  $data = variable_get('agoraData');
   if(isset($data)) {
     //remove data
     if(isset($data[$feed_id])) {
       array_splice($data, $feed_id, 1);
-      variable_set('spmtData', $data);
+      variable_set('agoraData', $data);
     }
   }
 
-  drupal_goto('/admin/config/spmt/');
+  drupal_goto('/admin/config/agora/');
 }
 
 function render_table() {
-  $data = variable_get('spmtData');
+  $data = variable_get('agoraData');
 
-  $header = array('#', 'SPMT API', 'rendered page', 'fields', 'edit', 'delete');
+  $header = array('#', 'Agora API', 'rendered page', 'fields', 'edit', 'delete');
   $rows = array();
 
   if(isset($data)) {
@@ -127,8 +123,8 @@ function render_table() {
         $value['feed_url'],
         '<a target="_blank" href="/'.$value['page'].'">'.$value['page'].'</a>',
         implode('<br />', $fields),
-        '<a href="/?q=admin/config/spmt/wizard/'.$key.'">Edit</a>',
-        '<a href="/?q=admin/config/spmt/delete/'.$key.'">Delete</a>',
+        '<a href="/?q=admin/config/agora/wizard/'.$key.'">Edit</a>',
+        '<a href="/?q=admin/config/agora/delete/'.$key.'">Delete</a>',
       );
     }
   }
@@ -141,7 +137,7 @@ function render_feed_button() {
     '#type' => 'link',
     '#text' => 'Add a new feed',
     '#title' => 'Add a new feed',
-    '#href' => 'admin/config/spmt/wizard',
+    '#href' => 'admin/config/agora/wizard',
     '#options' => array(
       'attributes' => array('class' => array('cool-class'), 'id' => 'cool-id'),
       'html' => FALSE,
@@ -151,16 +147,16 @@ function render_feed_button() {
   return $link;
 }
 
-function spmt_admin() {
-  return theme('spmt_admin_template', array(
+function agora_admin() {
+  return theme('agora_admin_template', array(
     'table' => render_table(),
     'link' => render_feed_button(),
   ));
 }
 
-function spmt_theme() {
+function agora_theme() {
   $themes = array(
-    'spmt_admin_template' => array(
+    'agora_admin_template' => array(
       'template' => '/theme/admin_template',
       'variables' => array(),
     ),
