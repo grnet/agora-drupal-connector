@@ -29,14 +29,14 @@ function agora_menu() {
     'title' => 'Agora',
     'description' => 'Configuration for Agora pages',
     'page callback' => 'agora_admin',
-    'access arguments' => array('administer agora settings'),
+    'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,
   );
   $items['admin/config/agora/wizard'] = array(
     'title' => 'Add a new Agora API',
     'description' => 'Register a new Agora API',
     'page callback' => 'agora_wizard_page',
-    'access arguments' => array(TRUE),
+    'access arguments' => array('administer site configuration'),
     'page arguments' => array(4),
     'type' => MENU_LOCAL_TASK,
     'file' => 'agora.pages.inc'
@@ -45,7 +45,7 @@ function agora_menu() {
     'title' => 'Delete a Agora API',
     'description' => 'Delete a Agora API',
     'page callback' => 'agora_delete_page',
-    'access arguments' => array(TRUE),
+    'access arguments' => array('administer site configuration'),
     'page arguments' => array(4),
     'type' => MENU_CONTEXT_NONE,
   );
