@@ -1,0 +1,5 @@
+Agora 7.x-1.x
+==============
+# Rename module to agora
+# Add functionality to create multiple API feeds
+# Add functionality to create multiple drupal pages to render the API
