@@ -26,7 +26,7 @@ function agora_sp_menu() {
   $items = array();
 
   $items['admin/config/agora_sp'] = array(
-    'title' => 'agora_sp',
+    'title' => 'Agora Service Portfolio',
     'description' => 'Configuration for Agora SP pages',
     'page callback' => 'agora_sp_admin',
     'access arguments' => array('administer site configuration'),
