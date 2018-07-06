@@ -3,55 +3,55 @@
 /**
  * Implements hook_STORE_KEY_mforms_init().
  */
-function agora_agora_mforms_init() {
-  $store = MformsSessionStore::getInstance('agora');
+function agora_sp_agora_sp_mforms_init() {
+  $store = MformsSessionStore::getInstance('agora_sp');
   $steps = MformsSteps::getInstance($store);
 
   // If using mustistep controls you need to explicitly define form steps and
   // its attributes.
   $controls = MformsMultiStepControls::getInstance($store, $steps, array(
-    '_agora_step1' => array('value' => 'step 1', 'weight' => -103),
-    '_agora_step2' => array('value' => 'step 2', 'weight' => -102),
-    '_agora_step3' => array('value' => 'step 3', 'weight' => -101),
-    '_agora_step4' => array('value' => 'step 4', 'weight' => -100),
+    '_agora_sp_step1' => array('value' => 'step 1', 'weight' => -103),
+    '_agora_sp_step2' => array('value' => 'step 2', 'weight' => -102),
+    '_agora_sp_step3' => array('value' => 'step 3', 'weight' => -101),
+    '_agora_sp_step4' => array('value' => 'step 4', 'weight' => -100),
   ));
   // Ajaxify the form stepping process.
   //$controls->ajaxify();
 
   // Init the mforms.
-  mforms_init_module('agora', 'agora', $store, $controls);
+  mforms_init_module('agora_sp', 'agora_sp', $store, $controls);
 }
 
-function agora_menu() {
+function agora_sp_menu() {
   $items = array();
 
-  $items['admin/config/agora'] = array(
-    'title' => 'Agora',
-    'description' => 'Configuration for Agora pages',
-    'page callback' => 'agora_admin',
+  $items['admin/config/agora_sp'] = array(
+    'title' => 'agora_sp',
+    'description' => 'Configuration for Agora SP pages',
+    'page callback' => 'agora_sp_admin',
     'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,
   );
-  $items['admin/config/agora/wizard'] = array(
-    'title' => 'Add a new Agora API',
-    'description' => 'Register a new Agora API',
-    'page callback' => 'agora_wizard_page',
+  $items['admin/config/agora_sp/wizard'] = array(
+    'title' => 'Add a new Agora SP API',
+    'description' => 'Register a new Agora SP API',
+    'page callback' => 'agora_sp_wizard_page',
     'access arguments' => array('administer site configuration'),
     'page arguments' => array(4),
     'type' => MENU_LOCAL_TASK,
-    'file' => 'agora.pages.inc'
+    'file' => 'agora_sp.pages.inc'
   );
-  $items['admin/config/agora/delete'] = array(
-    'title' => 'Delete a Agora API',
-    'description' => 'Delete a Agora API',
-    'page callback' => 'agora_delete_page',
+  $items['admin/config/agora_sp/delete'] = array(
+    'title' => 'Delete a agora_sp API',
+    'description' => 'Delete a agora_sp API',
+    'page callback' => 'agora_sp_delete_page',
     'access arguments' => array('administer site configuration'),
     'page arguments' => array(4),
     'type' => MENU_CONTEXT_NONE,
   );
 
   //add all dynamic urls
-  $feeds = variable_get('agoraData');
+  $feeds = variable_get('agora_spData');
   if(isset($feeds)) {
     foreach($feeds as $key => $feed) {
       $items[$feed['page']] = array(
@@ -67,7 +67,7 @@ function agora_menu() {
 
 function react_catalogue_page($page) {
   //prepare the data for js
-  $feeds = variable_get('agoraData');
+  $feeds = variable_get('agora_spData');
   $catalogue = array();
   $feed_key = array_search($page, array_column($feeds, 'page'));
   if ($feed_key !== FALSE) {
@@ -84,28 +84,28 @@ function react_catalogue_page($page) {
     $catalogue['fields'] = $fields;
   }
 
-  $module_path = drupal_get_path('module', 'agora');
-  $js_file = 'agora-ui.min.js';
-  return '<div id="root"></div><script>window.agora='.json_encode($catalogue).';</script><script src="'.$module_path.'/js/'.$js_file.'"></script>';
+  $module_path = drupal_get_path('module', 'agora_sp');
+  $js_file = 'agora_sp-ui.min.js';
+  return '<div id="root"></div><script>window.agora_sp='.json_encode($catalogue).';</script><script src="'.$module_path.'/js/'.$js_file.'"></script>';
 }
 
-function agora_delete_page($feed_id) {
-  $data = variable_get('agoraData');
+function agora_sp_delete_page($feed_id) {
+  $data = variable_get('agora_spData');
   if(isset($data)) {
     //remove data
     if(isset($data[$feed_id])) {
       array_splice($data, $feed_id, 1);
-      variable_set('agoraData', $data);
+      variable_set('agora_spData', $data);
     }
   }
 
-  drupal_goto('/admin/config/agora/');
+  drupal_goto('/admin/config/agora_sp/');
 }
 
 function render_table() {
-  $data = variable_get('agoraData');
+  $data = variable_get('agora_spData');
 
-  $header = array('#', 'Agora API', 'rendered page', 'fields', 'edit', 'delete');
+  $header = array('#', 'Agora SP API', 'rendered page', 'fields', 'edit', 'delete');
   $rows = array();
 
   if(isset($data)) {
@@ -123,8 +123,8 @@ function render_table() {
         $value['feed_url'],
         '<a target="_blank" href="/'.$value['page'].'">'.$value['page'].'</a>',
         implode('<br />', $fields),
-        '<a href="/?q=admin/config/agora/wizard/'.$key.'">Edit</a>',
-        '<a href="/?q=admin/config/agora/delete/'.$key.'">Delete</a>',
+        '<a href="/?q=admin/config/agora_sp/wizard/'.$key.'">Edit</a>',
+        '<a href="/?q=admin/config/agora_sp/delete/'.$key.'">Delete</a>',
       );
     }
   }
@@ -137,7 +137,7 @@ function render_feed_button() {
     '#type' => 'link',
     '#text' => 'Add a new feed',
     '#title' => 'Add a new feed',
-    '#href' => 'admin/config/agora/wizard',
+    '#href' => 'admin/config/agora_sp/wizard',
     '#options' => array(
       'attributes' => array('class' => array('cool-class'), 'id' => 'cool-id'),
       'html' => FALSE,
@@ -147,16 +147,16 @@ function render_feed_button() {
   return $link;
 }
 
-function agora_admin() {
-  return theme('agora_admin_template', array(
+function agora_sp_admin() {
+  return theme('agora_sp_admin_template', array(
     'table' => render_table(),
     'link' => render_feed_button(),
   ));
 }
 
-function agora_theme() {
+function agora_sp_theme() {
   $themes = array(
-    'agora_admin_template' => array(
+    'agora_sp_admin_template' => array(
       'template' => '/theme/admin_template',
       'variables' => array(),
     ),

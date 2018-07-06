@@ -1,9 +1,9 @@
-name = Agora
-description = Agora
+name = Agora Service Portfolio
+description = Agora Service Portfolio
 package = "Grnet - Agora"
 core = 7.x
-version = 7.x-0.1
-configure = admin/config/agora
+version = 7.x-1.1.2
+configure = admin/config/agora_sp
 dependencies[] = mforms
 dependencies[] = multiselect_sorting
 stylesheets[all][] = css/styles.css
