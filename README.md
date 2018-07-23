@@ -32,3 +32,6 @@ This module is working with a dependency of [agora-catalogue-react-view](https:/
   - In the `Manage Agora Feeds` you can see all the created feeds. You can click `Edit` to edit the field, or `Delete` to remove it.
   - Clear all caches (or run `drush cc all`).
 
+*Note*
+
+The easiest way to clear caches in drupal from the administration menu, is to navigate to `Administration > Configuration > Development > Performance`
