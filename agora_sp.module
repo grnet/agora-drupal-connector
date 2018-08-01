@@ -57,7 +57,7 @@ function agora_sp_menu() {
       $items[$feed['page']] = array(
         'page callback' => 'react_catalogue_page',
         'page arguments' => array($feed['page']),
-        'access arguments' => array(TRUE)
+        'access arguments' => array('access content')
       );
     }
   }
