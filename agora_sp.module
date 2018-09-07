@@ -84,7 +84,7 @@ function react_catalogue_page($page) {
     $catalogue['fields'] = $fields;
   }
 
-  $module_path = drupal_get_path('module', 'agora_sp');
+  $module_path = '/sites/all/modules/agora_sp';
   $js_file = 'agora_sp-ui.min.js';
   return '<div id="root"></div><script>window.agora_sp='.json_encode($catalogue).';</script><script src="'.$module_path.'/js/'.$js_file.'"></script>';
 }
