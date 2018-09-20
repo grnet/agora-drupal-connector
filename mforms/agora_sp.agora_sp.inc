@@ -289,16 +289,24 @@ function _agora_sp_step4_submit($form, &$form_state) {
 function getStep3Fields($vals) {
 
   // get only the field__ items
-  $fields = array_filter($vals, function($value, $key) {
-    return (is_string($key) && substr($key, 0, 7) === 'field__');
-  }, ARRAY_FILTER_USE_BOTH);
+  //$fields = array_filter($vals, function($value, $key) {
+  //  return (is_string($key) && substr($key, 0, 7) === 'field__');
+  //}, ARRAY_FILTER_USE_BOTH);
+  foreach ($vals as $key => $value){
+    if (is_string($key) && substr($key, 0, 7) === 'field__') {
+      $fields[$key] = $value;
+    }
+  }
 
-  $labels = array_filter($fields, function($value, $key) {
-    return (substr($key, -7) === '__label');
-  }, ARRAY_FILTER_USE_BOTH);
-
+  //$labels = array_filter($fields, function($value, $key) {
+  //  return (substr($key, -7) === '__label');
+  //}, ARRAY_FILTER_USE_BOTH);
+  foreach ($fields as $key => $value){
+    if (substr($key, -7) === '__label') {
+      $labels[$key] = $value;
+    }
+  }
   $values = array_diff_assoc($fields, $labels);
-
   $final_fields = array();
 
   foreach($labels as $key => $value) {
