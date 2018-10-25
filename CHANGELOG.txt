@@ -1,3 +1,9 @@
+# Changelog
+
+## [1.3] - 2018-10-25
+### Changed
+- Update React plugin to latest changes
+
 Agora 7.x-1.x
 ==============
 # Rename module to agora
