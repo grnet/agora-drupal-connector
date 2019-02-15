@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4] - 2019-10-15
+### Changed
+- Update React plugin to 0.1.4
+
 ## [1.3] - 2018-10-25
 ### Changed
 - Update React plugin to latest changes
