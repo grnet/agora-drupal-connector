@@ -35,3 +35,12 @@ This module is working with a dependency of [agora-catalogue-react-view](https:/
 *Note*
 
 The easiest way to clear caches in drupal from the administration menu, is to navigate to `Administration > Configuration > Development > Performance`
+
+### Updating the React app
+
+Whenever there is a new version of the React UI app, the steps to update and bump the drupal module version is as follows:
+
+  - Clone the repo of React UI and run `yarn && yarn build`
+  - From the output build folder of the above command, copy the `build/static/js/main.XXX.js` and paste it in this repo inside the `js` directory, with the name `agora_sp-ui.min.js`
+  - Update the Changelog and commit
+  - Git tag to bump version and push changes to remote(s)
