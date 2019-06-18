@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.1] - 2019-06-18
+### Changed
+- Update React plugin to 0.2.1
+
 ## [2.0.0] - 2019-06-11
 ### Changed
 - Update React plugin to 0.2.0
