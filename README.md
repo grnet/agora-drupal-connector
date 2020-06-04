@@ -44,3 +44,9 @@ Whenever there is a new version of the React UI app, the steps to update and bum
   - From the output build folder of the above command, copy the `build/static/js/main.XXX.js` and paste it in this repo inside the `js` directory, with the name `agora_sp-ui.min.js`
   - Update the Changelog and commit
   - Git tag to bump version and push changes to remote(s)
+
+### Funding
+The work represented by this software was partially funded by
+* EOSC-Hub project  European Union (EU) Horizon 2020 program under Grant number 77753642. 
+* EUDAT2020  European Union’s H2020  Program under Contract No. 654065.
+* EUDAT  Framework Programme 7 under Contract No. 283304.
